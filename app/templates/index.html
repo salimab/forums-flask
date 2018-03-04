@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+<head>
+   <title>My First Page</title>
+   <link rel="stylesheet" href="/static/style.css">
+</head>
+<body style="width: 880px; margin: auto;">
+
+    <h3 aligne = "left"><font size="3" face="georgia" color="red" > Home Page </font> </h3>
+
+
+    <h1  aligne = "center" ><img src="/static/image2.jpg" width="70" height="60" > <font  face="georgia" >ONE MILLION ARAB CODERS  </font></h1>
+
+    <p  align = "center"><font size="3" face="georgia" color="blue"><u>MEMBERS </u> -- <u> Profile </u></u></font></u>.</p>
+    <HR align=center size=4 width="100%" >
+    <h5  align = "right" ><a href="/topic/add"> <input type="submit" value="Create New Topic"/>  </a> </font>
+    <form method="post"
+      action="{{ url_for('topic_add') }}" method="post">
+    </form>
+    </h5>
+
+
+<style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    }
+th, td {
+    text-align: left;
+    padding: 8px;
+    width: 100%;
+    }
+tr:nth-child(even){background-color: #f2f2f2}
+th {
+    background-color: #4CAF50;
+    color: white;
+   }
+</style>
+    <table>
+
+
+   <tr>
+       <th>Title</th>
+       <th>Edit</th>
+       <th>Delete</th>
+
+   </tr>
+
+   {% for post in posts %}
+
+   <tr>
+       <td>{{post.title}}</td>
+
+       <td>
+            <a href="#">edit</a>
+        </td>
+       <td>
+            <a href="#">delete</a>
+        </td>
+
+   </tr>
+        {% endfor %}
+
+
+</table>
+</body>
