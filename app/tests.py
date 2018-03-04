@@ -1,5 +1,5 @@
 from app.models import Member  , Post
-from app.store import MemberStore , PostStore
+from app.stores import MemberStore , PostStore
 import time
 
 def create_members():

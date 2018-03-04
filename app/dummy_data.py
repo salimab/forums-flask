@@ -1,5 +1,5 @@
 from app import  models
-from app import store
+from app import stores
 
 dummy_members = [
     models.Member("Mohammed", 20),
@@ -20,7 +20,7 @@ dummy_posts = [
     models.Post("Algorithms", "Yeah, more of that", dummy_members[2].id),
     models.Post("Operating Systems", "Ewww", dummy_members[2].id),
 ]
-post_store = store.PostStore()
+post_store = stores.PostStore()
 def seed_stores(member_store, post_store):
     for member in dummy_members:
         member_store.add(member)

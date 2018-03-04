@@ -1,8 +1,10 @@
-from app import store
-from app import dummy_data
-from app import views
+from flask import Flask
+from app import stores, models, dummy_data
 
-member_store = store.MemberStore()
-post_store = store.PostStore()
-if __name__  == "__main__":
-    dummy_data.seed_stores(member_store,post_store)
+app = Flask(__name__)
+
+member_store = stores.MemberStore()
+post_store = stores.PostStore()
+dummy_data.seed_stores(member_store, post_store)
+
+from app import views
