@@ -6,9 +6,12 @@
 </head>
 <form method="post"
       action="{{ url_for('topic_add') }}" method="post">
-      <input type="text" name="title" />
-      <input type="text" name="content"/>
-      <input type="submit" value="Create"/>
+      <a ><font size="3" face="georgia" color="red" > Title : </font> </a><br>
+      <input type="text" name="title" /><br>
+      <a ><font size="3" face="georgia" color="red" > Content : </font> </a><br>
+      <textarea  name="content" rows="6" cols="50"></textarea> <br>
+      <input  type="submit" value="Create"/>
+
 
 </form>
 
