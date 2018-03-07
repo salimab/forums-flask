@@ -17,7 +17,6 @@
     border-collapse: collapse;
     width: 100%;
     }
-
     th, td {
     text-align: left;
     padding: 8px;
@@ -37,12 +36,14 @@
    </tr>
    {% for post in posts %}
    <tr>
-       <td>{{post.title}}</td>
        <td>
-            <a href="#">edit</a>
+           <a href="{{ url_for("topic_show", id = post.id) }}">{{post.title}}</a>
+       </td>
+       <td>
+            <a href="{{ url_for("topic_update", id = post.id) }}">edit</a>
         </td>
        <td>
-            <a href="#">delete</a>
+           <a href="{{ url_for("topic_delete", id = post.id) }}">delete</a>
         </td>
    </tr>
         {% endfor %}

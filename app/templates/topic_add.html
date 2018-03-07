@@ -4,18 +4,16 @@
     <meta charset="UTF-8">
     <title>Add Topic</title>
 </head>
-<form method="post"
+
+<body>
+     <form method="post"
       action="{{ url_for('topic_add') }}" method="post">
-      <a ><font size="3" face="georgia" color="red" > Title : </font> </a><br>
-      <input type="text" name="title" /><br>
-      <a ><font size="3" face="georgia" color="red" > Content : </font> </a><br>
-      <textarea  name="content" rows="6" cols="50"></textarea> <br>
-      <input  type="submit" value="Create"/>
+         <font color="red" size="4"> Title : </font><input type="text" name="title"/><br>
+         <font color="red" size="4">Content : </font><input type="text" name="content"/>
+         <input type="submit" value="Create"/>
 
 
 </form>
-
-<body>
 
 </body>
 </html>
