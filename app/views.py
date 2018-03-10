@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for
 from app import models
-from app import app, member_store, post_store
+from app import app, post_store
 
 @app.route("/")
 @app.route("/index")
@@ -37,4 +37,6 @@ def topic_update(id):
     else:
         post = post_store.get_by_id(id)
         return render_template("update_post.html", post=post)
+
+
 

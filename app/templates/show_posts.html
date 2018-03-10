@@ -10,10 +10,16 @@
 <div class="input-form">
    {% block content %}
         <form action="{{url_for('topic_show', id=post.id)}}" method="POST">
-            <input type="text" name="title" value="{{post.title}}">
-            <input type="text" name="content" value="{{post.topic}}">
+            <div>
+                <label> Title :</label>
+                <input type="text" name="title" value="{{post.title}}"><br>
+            </div>
+            <div>
+                <label> Topic :</label>
+                <input type="text" name="content" value="{{post.topic}}">
+                <input type="submit" value="Go Back">
+            </div>
 
-            <input type="submit" value="Go Back">
         </form>
     {% endblock %}
 </div>
