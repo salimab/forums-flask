@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, abort
 from app import post_store, models
 from app import app
 
@@ -7,6 +7,15 @@ def topic_get_all():
     posts = [post.__dict__() for post in post_store.get_all()]
     return jsonify(posts)
 
+@app.route("/api/topic/show/<int:id>")
+def topic_show_api(id):
+    post = post_store.get_by_id(id)
+    try:
+        result = jsonify(post.__dict__())
+    except AttributeError:
+        result = abort(404, "topic with id: {id} doesn't exist")
+
+    return result
 
 @app.route("/api/topic/add", methods=["POST"])
 def topic_create():
@@ -17,18 +26,31 @@ def topic_create():
 
 @app.route("/api/topic/delete/<int:id>" ,methods = ["DELETE"])
 def delete_topic(id):
-    request_data = request.get_json()
-    id = request_data["id"]
-    post_store.delete(id)
-    return jsonify(id)
+    try :
+        result = post_store.delete(id)
+        result = jsonify(result.__dict__())
+    except ValueError:
+        result = abort(404, "topic with id : {id} doesn't exist ")
+    return result
 
-@app.route("/topic/update/<int:id>" , methods = ["PUT"] )
+@app.route("/api/topic/update/<int:id>" , methods = ["PUT"] )
 def update_topic(id):
     request_data = request.get_json()
     post = post_store.get_by_id(id)
-    post.title = request_data["title"]
-    post.topic = request_data["content"]
-    post_store.update(post)
-    return jsonify(post_store.__dict__())
+    try:
+        post.title = request_data["title"]
+        post.topic = request_data["content"]
+        post_store.update(post)
+        result = jsonify(post.__dict__())
+    except AttributeError:
+        result = abort(404, "topic with id : {id} doesn't exist ")
+    except KeyError:
+        result = abort(400, "Couldn't parse the request data !")
+    return result
+
+@app.errorhandler(400)
+def bad_request(error) :
+    return jsonify(message=error.description)
+
 
 
