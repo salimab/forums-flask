@@ -37,6 +37,7 @@ class BaseStore():
         item_instance = self.get_by_id(id)
         if item_instance is not None :
             self._data_provider.remove(item_instance)
+        return item_instance
 
     def entity_exists(self,item_instance):
         result = True
