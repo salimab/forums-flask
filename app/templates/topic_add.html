@@ -8,12 +8,45 @@
 <body>
      <form method="post"
       action="{{ url_for('topic_add') }}" method="post">
-         <font color="red" size="4"> Title : </font><input type="text" name="title"/><br>
-         <font color="red" size="4">Content : </font><input type="text" name="content"/>
-         <input type="submit" value="Create"/>
+      <font color="red" size="4"> Title : </font><input type="text" name="title"/><br>
+      <font color="red" size="4">Content : </font><input type="text" name="content"/>
+      <input type="submit"  id ="submit_button" value="Create"/>
+     </form>
 
+     <button type="button"
+      onclick="document.getElementById('demo').innerHTML = Date()">Click me to display Date and Time.</button>
+     <p id="demo"></p>
 
-</form>
+    <script
+     src="https://code.jquery.com/jquery-3.3.1.min.js"
+     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+     crossorigin="anonymous"></script>
+    <script>
+    $(function ()
+    {
+        $("form").submit(function (event)
+        {
+            event.preventDefault();
+            var topicTitle = $("input[name='title']").val();
+            var topicContent = $("input[name='content']").val();
+            var topicData = {
+                "title": topicTitle,
+                "content": topicContent
+                };
+            $.ajax({
+                type: "POST",
+                url: "/api/topic/add",
+                data: JSON.stringify(topicData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response)
+                {
+                   alert("Added topic successfully !");
+                }
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

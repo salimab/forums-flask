@@ -7,46 +7,79 @@
 <body style="width: 880px; margin: auto;">
     <h4 >Done by: Salima </h4>
     <h3 aligne = "left"><font size="3" face="georgia" color="red" > Home Page </font> </h3>
-    <h1 ><img src="/static/image2.jpg" width="70" height="60" > <font  face="georgia" >ONE MILLION ARAB CODERS </font></h1>
-    <p  align = "center"><font size="3" face="georgia" color="blue"><a href="#">MEMBERS </a> --  Profile </font></p>
-    <HR color="purple" size=4 width="100%" >
-    <h5  align = "right" ><a href="/topic/add" ><font size="3" face="georgia" color="blue"> Create New Topic  Profile </font> </a></h5>
 
-     <style>
-     table {
+
+    <h1  aligne = "center" ><img src="/static/image2.jpg" width="70" height="60" > <font  face="georgia" >ONE MILLION ARAB CODERS  </font></h1>
+
+    <p  align = "center"><font size="3" face="georgia" color="blue"><a href="#"> MEMBERS</a> -- <a href="#">Profile</a> </font></u>.</p>
+    <HR align=center size=4 width="100%" color="purple" >
+    <h3  align = "right" ><a href="/topic/add">  Create New Topic  </a> </font>
+    </h3>
+
+
+<style>
+    table {
     border-collapse: collapse;
     width: 100%;
     }
-    th, td {
+th, td {
     text-align: left;
     padding: 8px;
+    width: 100%;
     }
-    tr:nth-child(even){background-color: #f2f2f2}
-    th {
+tr:nth-child(even){background-color: #f2f2f2}
+th {
     background-color: #4CAF50;
     color: white;
    }
-    </style>
-
+</style>
     <table>
    <tr>
-       <th><font size="4">Title</font></th>
-       <th><font size="4">Edit</font></th>
-       <th><font size="4">Delete</font></th>
+       <th>Title</th>
+       <th>Edit</th>
+       <th>Delete</th>
    </tr>
    {% for post in posts %}
    <tr>
        <td>
-           <a href="{{ url_for("topic_show", id = post.id) }}">{{post.title}}</a>
+       <a href="{{ url_for("topic_show", id = post.id) }}">{{post.title}}</a>
        </td>
        <td>
             <a href="{{ url_for("topic_update", id = post.id) }}">edit</a>
         </td>
        <td>
-           <a href="{{ url_for("topic_delete", id = post.id) }}">delete</a>
+           <a id="{{post.id}}" href="#">delete</a>
+
         </td>
+
    </tr>
         {% endfor %}
-</table>
-<h4 >Done by: Salima </h4>
+   </table>
+
+
 </body>
+
+<script
+     src="https://code.jquery.com/jquery-3.3.1.min.js"
+     integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+     crossorigin="anonymous"></script>
+    <script>
+    $(function ()
+    {
+        $("a").click(function(event)
+        {
+            var id = event.target.id;
+            $.ajax({
+                type: "DELETE",
+                url: "/api/topic/delete/"+id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response)
+                {
+                   alert("Delete topic successfully !");
+                   location.reload();
+                }
+            });
+        });
+    });
+</script>
