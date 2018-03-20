@@ -1,93 +1,62 @@
-import copy
-import itertools
+from app import models, db
+from sqlalchemy import desc, func
 
 class BaseStore():
-    def __init__(self,data_provider,last_id):
-        self._data_provider = data_provider
-        self._last_id = last_id
+    def __init__(self,data_provider):
+        self.data_provider = data_provider
+
 
     def get_all(self):
-        return self._data_provider
+        return self.data_provider.query.all()
 
-    def add(self,item_instance):
-        item_instance.id = self._last_id
-        self._data_provider.append(item_instance)
-        self._last_id += 1
+    def add(self,entity):
+        db.session.add(entity)
+        db.session.commit()
+        return  entity
+
 
     def get_by_id(self, id):
-        all_item_instances = self.get_all()
-        result = None
-        for item_instance in all_item_instances:
-            if item_instance.id == id:
-                result = item_instance
-                break
-        return  result
+        return self.data_provider.query.get(id)
 
-    def update(self,item_instance):
-        all_item_instances = self.get_all()
-        result = item_instance
-
-        for index,current_item_instance in enumerate(all_item_instances):
-            if current_item_instance.id == item_instance.id :
-                all_item_instances[index] = item_instance
-                break
+    def update(self, entity, fields):
+        result = self.data_provider.query.filter_by(id=entity.id).update(fields)
+        db.session.commit()
         return result
 
     def delete(self,id):
-        item_instance = self.get_by_id(id)
-        if item_instance is not None :
-            self._data_provider.remove(item_instance)
-        return item_instance
+        result = self.data_provider.query.filter_by(id=id).delete()
+        db.session.commit()
+        return  result
 
-    def entity_exists(self,item_instance):
+    def entity_exists(self,entity):
         result = True
-        if self.get_by_id(item_instance.id)is None:
+        if self.get_by_id(entity.id) is None:
             result = False
         return result
 
 class MemberStore(BaseStore):
-    members = []
-    last_id = 1
 
     def __init__(self):
-        super().__init__(MemberStore.members , MemberStore.last_id)
+        super().__init__(models.Member)
 
     def get_by_name(self, member_name):
-        all_members = self.get_all()
+        return self.data_provider.query.filter_by(name = member_name)
 
-        for member in all_members:
-            if member.name == member_name:
-                yield member
+    def update(self, entity):
+        fields = {"name": entity.name, "age": entity.age}
+        return super().update(entity, fields)
 
-    def get_members_with_posts(self, all_posts):
-        all_members = copy.deepcopy(self.get_all())
+    def get_members_with_posts(self):
+        return self.data_provider.query.join(models.Member.posts)
 
-        for member, post in itertools.product(all_members, all_posts):
-            if member.id is post.member_id:
-                member.posts.append(post)
-        for member in all_members :
-            yield member
-
-
-    def get_top_two(self, all_posts):
-        member_with_posts = list(self.get_members_with_posts(all_posts))
-        member_with_posts.sort(key=lambda member: len(member.posts), reverse=True)
-
-        yield member_with_posts[0]
-        yield member_with_posts[1]
+    def get_top_two(self):
+        return self.data_provider.query(func.count(models.Member.posts).label('total')).order_by('total DESC')
 
 class PostStore(BaseStore):
-    posts = []
-    last_id = 1
 
     def __init__(self):
-        super().__init__(PostStore.posts, PostStore.last_id)
+        super().__init__(models.Post)
 
-    def get_posts_by_date(self):
-        all_posts = self.get_all()
-        all_posts.sort(key = lambda post: post.date , reverse = True)
-
-        for post in all_posts :
-            yield all_posts
-
-
+    def update(self,entity):
+        fields = {"title" : entity.title, "content": entity.content}
+        return super().update(entity , fields)
